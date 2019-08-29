@@ -846,7 +846,7 @@ func (p *parser) operand(keep_parens bool) Expr {
 		}
 		return x
 
-	case _Func:
+	case _Func, _RArrow:
 		pos := p.pos()
 		p.next()
 		t := p.funcType()

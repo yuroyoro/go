@@ -180,8 +180,13 @@ redo:
 		s.tok = _IncOp
 
 	case '-':
-		s.op, s.prec = Sub, precAdd
 		c = s.getr()
+		if c == '>' {
+			s.tok = _RArrow
+			break
+		}
+
+		s.op, s.prec = Sub, precAdd
 		if c != '-' {
 			goto assignop
 		}
