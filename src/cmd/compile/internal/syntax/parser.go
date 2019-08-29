@@ -1128,7 +1128,7 @@ func (p *parser) typeOrNil() Expr {
 		t.Elem = p.chanElem()
 		return t
 
-	case _Func:
+	case _Func, _RArrow:
 		// fntype
 		p.next()
 		return p.funcType()
@@ -1471,7 +1471,7 @@ func (p *parser) paramDeclOrNil() *Field {
 	case _Name:
 		f.Name = p.name()
 		switch p.tok {
-		case _Name, _Star, _Arrow, _Func, _Lbrack, _Chan, _Map, _Struct, _Interface, _Lparen:
+		case _Name, _Star, _Arrow, _Func, _RArrow, _Lbrack, _Chan, _Map, _Struct, _Interface, _Lparen:
 			// sym name_or_type
 			f.Type = p.type_()
 
@@ -1486,7 +1486,7 @@ func (p *parser) paramDeclOrNil() *Field {
 			f.Name = nil
 		}
 
-	case _Arrow, _Star, _Func, _Lbrack, _Chan, _Map, _Struct, _Interface, _Lparen:
+	case _Arrow, _Star, _Func, _RArrow, _Lbrack, _Chan, _Map, _Struct, _Interface, _Lparen:
 		// name_or_type
 		f.Type = p.type_()
 
@@ -2074,7 +2074,7 @@ func (p *parser) stmtOrNil() Stmt {
 			return p.simpleStmt(nil, 0) // unary operators
 		}
 
-	case _Literal, _Func, _Lparen, // operands
+	case _Literal, _Func, _RArrow, _Lparen, // operands
 		_Lbrack, _Struct, _Map, _Chan, _Interface, // composite types
 		_Arrow: // receive operator
 		return p.simpleStmt(nil, 0)
